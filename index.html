@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charadas Estatísticas do Amor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff; /* Fundo branco */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options li {
+            margin-bottom: 10px;
+        }
+        .options button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .options button:hover {
+            background-color: #0056b3;
+        }
+        .feedback {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        .final-message {
+            display: none;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+        .final-visible {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="quiz">
+        <div class="question" id="question"></div>
+        <ul class="options" id="options"></ul>
+        <div class="feedback" id="feedback"></div>
+    </div>
+    <div class="final-message" id="finalMessage">
+        Para o próximo desafio: Vá até o carro e abra o porta-luvas.
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Sou o centro das atenções em um relacionamento. Quando estamos próximos, me chamam de 'o ponto de equilíbrio'. Quem sou eu?",
+                options: ["Mediana", "Média", "Desvio padrão", "Moda"],
+                answer: "Média"
+            },
+            {
+                question: "Quando estou presente, meus sentimentos variam. Se me aumento, você percebe que os sentimentos estão mais intensos. Quem sou eu?",
+                options: ["Coeficiente de correlação", "Média", "Desvio padrão", "Valor-p"],
+                answer: "Desvio padrão"
+            },
+            {
+                question: "Eu sou o ponto onde nossos corações se encontram, dividindo o que há de mais profundo em duas partes iguais. Quem sou eu?",
+                options: ["Moda", "Mediana", "Variância", "Média"],
+                answer: "Mediana"
+            },
+            {
+                question: "Sou a força que mantém nossos corações próximos, sempre que estamos em sintonia. Quando estou forte, sabemos que estamos juntos na mesma direção. O que sou?",
+                options: ["Coeficiente de correlação", "Desvio padrão", "Moda", "Valor-p"],
+                answer: "Coeficiente de correlação"
+            },
+            {
+                question: "Sou o momento decisivo em um relacionamento. Quando minha presença é significativa, indicamos que o amor realmente existe. Quem sou eu?",
+                options: ["Variância", "Valor-p", "Coeficiente de correlação", "Média"],
+                answer: "Valor-p"
+            }
+        ];
+
+        let currentQuestion = 0;
+
+        function loadQuestion() {
+            const questionElement = document.getElementById("question");
+            const optionsElement = document.getElementById("options");
+            const feedbackElement = document.getElementById("feedback");
+
+            // Clear previous content
+            feedbackElement.textContent = "";
+            optionsElement.innerHTML = "";
+
+            // Load current question
+            const q = questions[currentQuestion];
+            questionElement.textContent = q.question;
+
+            q.options.forEach(option => {
+                const li = document.createElement("li");
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.onclick = () => checkAnswer(option);
+                li.appendChild(button);
+                optionsElement.appendChild(li);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            const feedbackElement = document.getElementById("feedback");
+            const finalMessageElement = document.getElementById("finalMessage");
+            const quizElement = document.getElementById("quiz");
+            const q = questions[currentQuestion];
+
+            if (selectedOption === q.answer) {
+                feedbackElement.textContent = "Correto! Vamos para a próxima pergunta.";
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    setTimeout(loadQuestion, 1000);
+                } else {
+                    quizElement.style.display = "none";
+                    finalMessageElement.style.display = "flex";
+                    finalMessageElement.classList.add("final-visible");
+                }
+            } else {
+                feedbackElement.textContent = "Errado. Tente novamente!";
+            }
+        }
+
+        // Initialize the quiz
+        loadQuestion();
+    </script>
+</body>
+</html>
+
